@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Our Family Tree — Interactive Genealogy</title>
+<meta name="description" content="A modern interactive family tree with search, zoom, and editable member cards." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="my.css" />
+<!-- html2canvas + jsPDF for export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+</head>
+<body>
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar glass">
+    <div class="brand">
+      <div class="logo-dot"></div>
+      <h1>Heritage<span>.</span></h1>
+    </div>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" class="icon"><path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" type="search" placeholder="Search family by name, occupation…" autocomplete="off" />
+      <div id="searchResults" class="search-results hidden"></div>
+    </div>
+    <div class="actions">
+      <button id="zoomOut" class="icon-btn" title="Zoom out">−</button>
+      <span id="zoomLabel" class="zoom-label">100%</span>
+      <button id="zoomIn" class="icon-btn" title="Zoom in">+</button>
+      <button id="zoomReset" class="icon-btn" title="Reset zoom">⤾</button>
+      <button id="addBtn" class="pill primary">+ Add member</button>
+      <button id="adminToggle" class="pill ghost">Edit mode: Off</button>
+      <button id="exportBtn" class="pill ghost">Export PDF</button>
+      <button id="themeToggle" class="icon-btn" title="Toggle theme">🌙</button>
+    </div>
+  </header>
+  <!-- ============ TREE STAGE ============ -->
+  <main id="stage" class="stage">
+    <div id="treeWrap" class="tree-wrap">
+      <!-- Desktop tree gets rendered here -->
+      <div id="tree" class="tree"></div>
+      <!-- Mobile accordion gets rendered here -->
+      <div id="mobileTree" class="mobile-tree"></div>
+    </div>
+  </main>
+  <!-- ============ DETAIL MODAL ============ -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card glass" role="dialog" aria-modal="true">
+      <button class="modal-close" data-close>✕</button>
+      <div class="modal-head">
+        <label class="avatar-edit">
+          <img id="mPhoto" alt="" />
+          <input id="mPhotoInput" type="file" accept="image/*" hidden />
+          <span class="avatar-overlay">Change</span>
+        </label>
+        <div class="modal-titles">
+          <h2 id="mName" contenteditable="false"></h2>
+          <p id="mMeta"></p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="field"><label>Full name</label><input id="fName" /></div>
+        <div class="row">
+          <div class="field"><label>Birth year</label><input id="fBirth" type="number" /></div>
+          <div class="field"><label>Occupation</label><input id="fOcc" /></div>
+        </div>
+        <div class="field"><label>Short bio</label><textarea id="fBio" rows="3"></textarea></div>
+        <div class="row">
+          <div class="field"><label>Parent</label><p id="fParent" class="readout"></p></div>
+          <div class="field"><label>Children</label><p id="fChildren" class="readout"></p></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="deleteBtn" class="pill danger ghost">Delete</button>
+        <div class="spacer"></div>
+        <button id="addChildBtn" class="pill ghost">+ Add child</button>
+        <button id="saveBtn" class="pill primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+  <script src="design.js" defer></script>
+</body>
+</html>
